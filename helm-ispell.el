@@ -1,10 +1,11 @@
-;;; helm-ispell.el --- ispell-complete-word with helm interface
+;;; helm-ispell.el --- ispell-complete-word with helm interface -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2013 by Syohei YOSHIDA
+;; Copyright (C) 2015 by Syohei YOSHIDA
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
-;; URL:
+;; URL: https://github.com/syohex/emacs-helm-ispell
 ;; Version: 0.01
+;; Package-Requires: ((helm-core "1.7.7"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -57,10 +58,10 @@
     (insert candidate)))
 
 (defvar helm-ispell--source
-  '((name . "Ispell")
-    (candidates . helm-ispell--init)
-    (action . helm-ispell--action-insert)
-    (candidate-number-limit . 9999)))
+  (helm-build-sync-source "Ispell"
+    :candidates #'helm-ispell--init
+    :action  #'helm-ispell--action-insert
+    :candidate-number-limit  9999))
 
 ;;;###autoload
 (defun helm-ispell ()
