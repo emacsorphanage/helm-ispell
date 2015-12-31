@@ -22,6 +22,8 @@
 
 ;;; Commentary:
 
+;; This package provides helm interface of ispell.
+
 ;;; Code:
 
 (require 'helm)
@@ -29,7 +31,7 @@
 (require 'thingatpt)
 
 (defgroup helm-ispell nil
-  "Insert word by ispell"
+  "Helm interface of ispell"
   :group 'helm)
 
 (defun helm-ispell--case-function (input)
