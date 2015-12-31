@@ -29,10 +29,19 @@
 (require 'helm)
 (require 'ispell)
 (require 'thingatpt)
+(require 'browse-url)
 
 (defgroup helm-ispell nil
   "Helm interface of ispell"
   :group 'helm)
+
+(defcustom helm-ispell-browse-url-function
+  (lambda (candidate)
+    (format "http://dictionary.reference.com/browse/%s?s=t" candidate))
+  "Function returns URL which is opened by browse-url.
+This function takes one argument, candidate."
+  :type 'function
+  :group 'helm-ispell)
 
 (defun helm-ispell--case-function (input)
   (let ((case-fold-search nil))
@@ -59,11 +68,17 @@
     (delete-region (point) curpoint)
     (insert candidate)))
 
+(defun helm-ispell--open-browser (candidate)
+  (browse-url (funcall helm-ispell-browse-url-function candidate)))
+
 (defvar helm-ispell--source
   (helm-build-sync-source "Ispell"
     :candidates #'helm-ispell--init
-    :action  #'helm-ispell--action-insert
-    :candidate-number-limit  9999))
+    :persistent-action #'helm-ispell--open-browser
+    :candidate-number-limit 9999
+    :action (helm-make-actions
+             "Insert" #'helm-ispell--action-insert
+             "Open browser" #'helm-ispell--open-browser)))
 
 ;;;###autoload
 (defun helm-ispell ()
