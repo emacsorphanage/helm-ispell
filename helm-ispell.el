@@ -5,7 +5,7 @@
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-helm-ispell
 ;; Version: 0.01
-;; Package-Requires: ((helm-core "1.7.7"))
+;; Package-Requires: ((helm-core "3.6.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 
 ;;; Code:
 
-(require 'helm)
+(require 'helm-core)
 (require 'ispell)
 (require 'thingatpt)
 (require 'browse-url)
@@ -59,7 +59,7 @@ This function takes one argument, candidate."
             (case-func (helm-ispell--case-function word)))
         (when (string-match-p "\\`[a-z]+\\'" input)
           (mapcar case-func
-                  (sort (lookup-words (concat input "*") ispell-complete-word-dict)
+                  (sort (ispell-lookup-words (concat input "*") ispell-complete-word-dict)
                         'helm-ispell--compare-length)))))))
 
 (defun helm-ispell--action-insert (candidate)
